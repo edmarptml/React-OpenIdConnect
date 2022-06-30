@@ -73,7 +73,11 @@ class Authenticate extends Component {
         if (this.state.isAuthenticated) {
             return (this.props.children);
         }
-        return <div onClick={this.signin}>{this.props.renderNotAuthenticated()}</div>;
+        else
+        {
+              this.signin();
+              return {this.props.renderNotAuthenticated()};
+        }
     }
 }
 
