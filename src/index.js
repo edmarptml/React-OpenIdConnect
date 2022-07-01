@@ -14,7 +14,7 @@ import { UserManager } from 'oidc-client';
 class Authenticate extends Component {
     constructor(props) {
         super(props);
-        this.signin = this.signin.bind(this);        
+        this.signin = this.signin.bind(this);
         this.onUserLoaded = this.onUserLoaded.bind(this);
 
         this.state = { isAuthenticated: false };
@@ -27,10 +27,10 @@ class Authenticate extends Component {
         this.userManager.events.addUserUnloaded(this.onUserUnloaded);
 
         this.userManager.getUser().then((user) => {
-            if (user !== null && user !== undefined) {                
+            if (user !== null && user !== undefined) {
                 this.onUserLoaded(user);
             } else if (this.isSuccessfullyAuthenticated()) {
-                this.userManager.signinRedirectCallback().then(() => {                   
+                this.userManager.signinRedirectCallback().then(() => {
                     window.history.replaceState({}, "", "/");
                 }).catch(function (err) {
                     console.log("Error signinRedirectCallback: ", err);
@@ -48,8 +48,8 @@ class Authenticate extends Component {
     }
 
     onUserLoaded(user) {
-        this.setState({ isAuthenticated: true });     
-        
+        this.setState({ isAuthenticated: true });
+
         if (this.props.userLoaded !== undefined)
             this.props.userLoaded(user);
     }
@@ -59,7 +59,7 @@ class Authenticate extends Component {
 
         if (this.props.userUnLoaded !== undefined)
             this.props.userUnLoaded();
-    }   
+    }
 
     signin() {
         this.userManager.signinRedirect().then(function () {
@@ -73,10 +73,17 @@ class Authenticate extends Component {
         if (this.state.isAuthenticated) {
             return (this.props.children);
         }
-        else
-        {
-              return this.signin();              
+        else {
+            return <div>Will redirect soon...</div>;
         }
+    }
+
+    componentDidUpdate() {
+        setTimeout(() => {
+            if (!this.state.isAuthenticated) {
+                this.signin();
+            }
+        }, 3000)
     }
 }
 
