@@ -80,7 +80,8 @@ class Authenticate extends Component {
 
     componentDidUpdate() {
         setTimeout(() => {
-            if (!this.state.isAuthenticated) {
+            console.log(this.state.isAuthenticated);
+            if (this.state.isAuthenticated == false) {
                 this.signin();
             }
         }, 3000)
